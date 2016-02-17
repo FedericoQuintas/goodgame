@@ -1,18 +1,17 @@
 package goodgames;
 
-import goodgames.domain.CoffeType;
+import goodgames.domain.CoffeeType;
 import goodgames.domain.Order;
 import goodgames.domain.PaymentType;
 import goodgames.domain.Programmer;
 import goodgames.domain.SummaryInformation;
-import goodgames.domain.factory.OrderBuilder;
-import goodgames.domain.factory.ProgrammerBuilder;
+import goodgames.domain.builder.OrderBuilder;
+import goodgames.domain.builder.ProgrammerBuilder;
 
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 
 public class CoffeeTest {
@@ -20,12 +19,12 @@ public class CoffeeTest {
 	@Test
 	public void whenAProgrammerLikesEspressoAndPaysCashThenTakesTwoSecondsAndAQuarter() {
 
-		Programmer programmer = buildProgrammer(CoffeType.ESPRESSO,
-				PaymentType.CASH);
+		Programmer programmer = buildProgrammer(CoffeeType.ESPRESSO);
 
 		OrderBuilder orderBuilder = new OrderBuilder();
 
-		Order order = orderBuilder.withProgrammer(programmer).build();
+		Order order = orderBuilder.withPaymentType(PaymentType.CASH)
+				.withProgrammer(programmer).build();
 
 		List<Order> orders = Arrays.asList(order);
 
@@ -36,14 +35,12 @@ public class CoffeeTest {
 				coffeeMachineInformation.getTotalCoffeeSold());
 	}
 
-	private Programmer buildProgrammer(CoffeType coffeType,
-			PaymentType paymentType) {
+	private Programmer buildProgrammer(CoffeeType coffeType) {
 
 		ProgrammerBuilder programmerBuilder = new ProgrammerBuilder();
 
 		Programmer programmer = programmerBuilder
-				.withFavouriteCoffee(coffeType).withPaymentType(paymentType)
-				.build();
+				.withFavouriteCoffee(coffeType).build();
 
 		return programmer;
 	}

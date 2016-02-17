@@ -2,19 +2,13 @@ package goodgames.domain;
 
 public class Programmer {
 
-	private PaymentType paymentType;
-	private CoffeType coffeeType;
+	private CoffeeType coffeeType;
 
-	public Programmer(CoffeType coffeeType, PaymentType paymentType) {
+	public Programmer(CoffeeType coffeeType) {
 		this.coffeeType = coffeeType;
-		this.paymentType = paymentType;
 	}
 
-	public PaymentType getPaymentType() {
-		return paymentType;
-	}
-
-	public CoffeType getCoffeeType() {
+	public CoffeeType getCoffeeType() {
 		return coffeeType;
 	}
 
