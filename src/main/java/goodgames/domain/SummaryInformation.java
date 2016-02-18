@@ -7,14 +7,17 @@ public class SummaryInformation {
 
 	private Double totalAmmountOfTime;
 	private SortedSet<Double> orderTimes = new TreeSet<>();
+	private CoffeeSoldSummary coffeeSoldSummary;
 
 	public SummaryInformation() {
 		totalAmmountOfTime = new Double(0);
+		coffeeSoldSummary = new CoffeeSoldSummary();
 	}
 
 	public void addOrder(Order order) {
 		addTotalTimeOfTime(order.getTotalAmmountOfTime());
 		addOrderTime(order);
+		coffeeSoldSummary.addTotalOfCoffeeSold(order);
 	}
 
 	private void addOrderTime(Order order) {
@@ -35,6 +38,10 @@ public class SummaryInformation {
 
 	public Double getFastestAmmountOfTime() {
 		return orderTimes.last();
+	}
+
+	public CoffeeSoldSummary getCoffeeSold() {
+		return coffeeSoldSummary;
 	}
 
 }
