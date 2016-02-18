@@ -1,10 +1,12 @@
 package goodgames.domain;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 public class SummaryInformation {
 
 	private Double totalAmmountOfTime;
-	private Double slowestAmmountOfTime;
-	private Double fastestAmmountOfTime;
+	private SortedSet<Double> orderTimes = new TreeSet<>();
 
 	public SummaryInformation() {
 		totalAmmountOfTime = new Double(0);
@@ -12,17 +14,11 @@ public class SummaryInformation {
 
 	public void addOrder(Order order) {
 		addTotalTimeOfTime(order.getTotalAmmountOfTime());
-		updateSlowest(order);
-		updateFastest(order);
+		addOrderTime(order);
 	}
 
-	private void updateFastest(Order order) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void updateSlowest(Order order) {
-
+	private void addOrderTime(Order order) {
+		orderTimes.add(order.getTotalAmmountOfTime());
 	}
 
 	private void addTotalTimeOfTime(Double totalAmmountOfTime) {
@@ -34,11 +30,11 @@ public class SummaryInformation {
 	}
 
 	public Double getSlowestAmmountOfTime() {
-		return slowestAmmountOfTime;
+		return orderTimes.first();
 	}
 
 	public Double getFastestAmmountOfTime() {
-		return fastestAmmountOfTime;
+		return orderTimes.last();
 	}
 
 }

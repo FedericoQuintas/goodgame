@@ -126,6 +126,7 @@ public class CoffeeTest {
 		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator().getCoffeeMachineInformation(orders);
 
 		Double fastestTimeExpected = new Double(2.75);
+		
 		Assert.assertEquals(fastestTimeExpected, coffeeMachineInformation.getFastestAmmountOfTime());
 	}
 
