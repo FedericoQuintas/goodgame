@@ -24,4 +24,8 @@ public class Order {
 		return this.programmer;
 	}
 
+	public void addAccumulatedTime(Double timeToAdd) {
+		totalAmmountOfTime =  totalAmmountOfTime + timeToAdd;
+	}
+
 }

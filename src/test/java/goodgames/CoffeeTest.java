@@ -32,7 +32,103 @@ public class CoffeeTest {
 				.getCoffeeMachineInformation(orders);
 
 		Assert.assertEquals(new Double(2.25),
-				coffeeMachineInformation.getTotalCoffeeSold());
+				coffeeMachineInformation.getTotalAmmountOfTime());
+	}
+	
+	@Test
+	public void whenAProgrammerLikesEspressoAndPaysWithCreditCardThenTakesTwoSeconds() {
+
+		Programmer programmer = buildProgrammer(CoffeeType.ESPRESSO);
+
+		OrderBuilder orderBuilder = new OrderBuilder();
+
+		Order order = orderBuilder.withPaymentType(PaymentType.CARD)
+				.withProgrammer(programmer).build();
+
+		List<Order> orders = Arrays.asList(order);
+
+		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
+				.getCoffeeMachineInformation(orders);
+
+		Assert.assertEquals(new Double(2),
+				coffeeMachineInformation.getTotalAmmountOfTime());
+	}
+	
+	@Test
+	public void whenAProgrammerLikesLatteAndPaysWithCashThenTakesTwoSecondsAndAHalf() {
+
+		Programmer programmer = buildProgrammer(CoffeeType.LATTE);
+
+		OrderBuilder orderBuilder = new OrderBuilder();
+
+		Order order = orderBuilder.withPaymentType(PaymentType.CASH)
+				.withProgrammer(programmer).build();
+
+		List<Order> orders = Arrays.asList(order);
+
+		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
+				.getCoffeeMachineInformation(orders);
+
+		Assert.assertEquals(new Double(2.5),
+				coffeeMachineInformation.getTotalAmmountOfTime());
+	}
+	
+	@Test
+	public void whenAProgrammerLikesLatteAndPaysWithCreditCardThenTakesTwoSecondsAndAQuarter() {
+
+		Programmer programmer = buildProgrammer(CoffeeType.LATTE);
+
+		OrderBuilder orderBuilder = new OrderBuilder();
+
+		Order order = orderBuilder.withPaymentType(PaymentType.CARD)
+				.withProgrammer(programmer).build();
+
+		List<Order> orders = Arrays.asList(order);
+
+		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
+				.getCoffeeMachineInformation(orders);
+
+		Assert.assertEquals(new Double(2.25),
+				coffeeMachineInformation.getTotalAmmountOfTime());
+	}
+	
+	@Test
+	public void whenAProgrammerLikesCapuccinoAndPaysWithCashThenTakesTwoSecondsAndThreeQuarters() {
+
+		Programmer programmer = buildProgrammer(CoffeeType.CAPUCCINO);
+
+		OrderBuilder orderBuilder = new OrderBuilder();
+
+		Order order = orderBuilder.withPaymentType(PaymentType.CASH)
+				.withProgrammer(programmer).build();
+
+		List<Order> orders = Arrays.asList(order);
+
+		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
+				.getCoffeeMachineInformation(orders);
+
+		Assert.assertEquals(new Double(2.75),
+				coffeeMachineInformation.getTotalAmmountOfTime());
+	
+	}
+	
+	@Test
+	public void whenAProgrammerLikesCapuccinoAndPaysWithCashThenTakesTwoSecondsAndAHalf() {
+
+		Programmer programmer = buildProgrammer(CoffeeType.CAPUCCINO);
+
+		OrderBuilder orderBuilder = new OrderBuilder();
+
+		Order order = orderBuilder.withPaymentType(PaymentType.CARD)
+				.withProgrammer(programmer).build();
+
+		List<Order> orders = Arrays.asList(order);
+
+		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
+				.getCoffeeMachineInformation(orders);
+
+		Assert.assertEquals(new Double(2.5),
+				coffeeMachineInformation.getTotalAmmountOfTime());
 	}
 
 	private Programmer buildProgrammer(CoffeeType coffeType) {
