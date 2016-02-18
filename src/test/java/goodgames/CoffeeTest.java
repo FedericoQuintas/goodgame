@@ -26,10 +26,7 @@ public class CoffeeTest {
 		Order order = orderBuilder.withPaymentType(PaymentType.CASH)
 				.withProgrammer(programmer).build();
 
-		List<Order> orders = Arrays.asList(order);
-
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
-				.getCoffeeMachineInformation(orders);
+		SummaryInformation coffeeMachineInformation = simulateOrders(order);
 
 		Assert.assertEquals(new Double(2.25),
 				coffeeMachineInformation.getTotalAmmountOfTime());
@@ -45,10 +42,7 @@ public class CoffeeTest {
 		Order order = orderBuilder.withPaymentType(PaymentType.CARD)
 				.withProgrammer(programmer).build();
 
-		List<Order> orders = Arrays.asList(order);
-
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
-				.getCoffeeMachineInformation(orders);
+		SummaryInformation coffeeMachineInformation = simulateOrders(order);
 
 		Assert.assertEquals(new Double(2),
 				coffeeMachineInformation.getTotalAmmountOfTime());
@@ -64,13 +58,18 @@ public class CoffeeTest {
 		Order order = orderBuilder.withPaymentType(PaymentType.CASH)
 				.withProgrammer(programmer).build();
 
+		SummaryInformation coffeeMachineInformation = simulateOrders(order);
+
+		Assert.assertEquals(new Double(2.5),
+				coffeeMachineInformation.getTotalAmmountOfTime());
+	}
+
+	private SummaryInformation simulateOrders(Order order) {
 		List<Order> orders = Arrays.asList(order);
 
 		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
 				.getCoffeeMachineInformation(orders);
-
-		Assert.assertEquals(new Double(2.5),
-				coffeeMachineInformation.getTotalAmmountOfTime());
+		return coffeeMachineInformation;
 	}
 	
 	@Test
@@ -83,10 +82,7 @@ public class CoffeeTest {
 		Order order = orderBuilder.withPaymentType(PaymentType.CARD)
 				.withProgrammer(programmer).build();
 
-		List<Order> orders = Arrays.asList(order);
-
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
-				.getCoffeeMachineInformation(orders);
+		SummaryInformation coffeeMachineInformation = simulateOrders(order);
 
 		Assert.assertEquals(new Double(2.25),
 				coffeeMachineInformation.getTotalAmmountOfTime());
@@ -102,10 +98,7 @@ public class CoffeeTest {
 		Order order = orderBuilder.withPaymentType(PaymentType.CASH)
 				.withProgrammer(programmer).build();
 
-		List<Order> orders = Arrays.asList(order);
-
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
-				.getCoffeeMachineInformation(orders);
+		SummaryInformation coffeeMachineInformation = simulateOrders(order);
 
 		Assert.assertEquals(new Double(2.75),
 				coffeeMachineInformation.getTotalAmmountOfTime());
@@ -122,10 +115,7 @@ public class CoffeeTest {
 		Order order = orderBuilder.withPaymentType(PaymentType.CARD)
 				.withProgrammer(programmer).build();
 
-		List<Order> orders = Arrays.asList(order);
-
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
-				.getCoffeeMachineInformation(orders);
+		SummaryInformation coffeeMachineInformation = simulateOrders(order);
 
 		Assert.assertEquals(new Double(2.5),
 				coffeeMachineInformation.getTotalAmmountOfTime());
