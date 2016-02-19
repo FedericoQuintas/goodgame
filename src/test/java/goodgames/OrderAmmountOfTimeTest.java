@@ -186,7 +186,24 @@ public class OrderAmmountOfTimeTest {
 					NO_ORDERS_HAVE_BEEN_MADE_YET));
 		}
 	}
-	
+
+	@Test
+	public void whenOrderListIsEmptyAndAsksForAverageOrderTimeThenExceptionIsThrown() {
+
+		List<Order> orders = Lists.newArrayList();
+
+		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
+				.getCoffeeMachineInformation(orders);
+
+		try {
+			coffeeMachineInformation.getAverageAmmountOfTime();
+			fail();
+		} catch (EmptyOrderListException exception) {
+			Assert.assertTrue(exception.getMessage().equals(
+					NO_ORDERS_HAVE_BEEN_MADE_YET));
+		}
+	}
+
 	@Test
 	public void whenOrderListIsEmptyAndAsksForFastestOrderThenExceptionIsThrown() {
 
@@ -203,7 +220,6 @@ public class OrderAmmountOfTimeTest {
 					NO_ORDERS_HAVE_BEEN_MADE_YET));
 		}
 	}
-
 
 	@Test
 	public void whenTwoProgrammersMakesOrdersThenAverageTimeCalculatedCorrectly() {
