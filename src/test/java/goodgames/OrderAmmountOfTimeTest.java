@@ -1,16 +1,17 @@
 package goodgames;
 
 import static org.junit.Assert.fail;
-import goodgames.common.config.GetPropertyValues;
-import goodgames.common.domain.CoffeeType;
-import goodgames.common.domain.PaymentType;
-import goodgames.common.domain.SummaryInformation;
+import goodgames.config.GetPropertyValues;
 import goodgames.order.domain.Order;
 import goodgames.order.domain.Programmer;
 import goodgames.order.domain.builder.OrderBuilder;
 import goodgames.order.domain.builder.ProgrammerBuilder;
 import goodgames.order.exception.EmptyOrderListException;
+import goodgames.store.domain.CoffeeType;
+import goodgames.store.domain.PaymentType;
+import goodgames.store.domain.SummaryInformation;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,9 +28,9 @@ public class OrderAmmountOfTimeTest {
 	private static Integer numberOfMachines;
 
 	@BeforeClass
-	public static void before() {
+	public static void before() throws IOException {
 		GetPropertyValues properties = new GetPropertyValues();
-		numberOfMachines = properties.getNumberOfMachines();
+		numberOfMachines = properties.getPropertyValues();
 	}
 
 	@Test

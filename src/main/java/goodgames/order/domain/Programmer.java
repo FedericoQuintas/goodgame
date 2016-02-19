@@ -1,6 +1,6 @@
 package goodgames.order.domain;
 
-import goodgames.common.domain.CoffeeType;
+import goodgames.store.domain.CoffeeType;
 
 public class Programmer {
 

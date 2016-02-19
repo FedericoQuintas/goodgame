@@ -1,11 +1,11 @@
 package goodgames;
 
-import goodgames.common.domain.CoffeeType;
-import goodgames.common.domain.PaymentType;
 import goodgames.order.domain.Order;
 import goodgames.order.domain.Programmer;
 import goodgames.order.domain.builder.OrderBuilder;
 import goodgames.order.domain.builder.ProgrammerBuilder;
+import goodgames.store.domain.CoffeeType;
+import goodgames.store.domain.PaymentType;
 
 import org.junit.Assert;
 import org.junit.Before;

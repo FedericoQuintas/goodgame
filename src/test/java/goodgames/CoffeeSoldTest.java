@@ -1,14 +1,15 @@
 package goodgames;
 
-import goodgames.common.config.GetPropertyValues;
-import goodgames.common.domain.CoffeeType;
-import goodgames.common.domain.PaymentType;
-import goodgames.common.domain.SummaryInformation;
+import goodgames.config.GetPropertyValues;
 import goodgames.order.domain.Order;
 import goodgames.order.domain.Programmer;
 import goodgames.order.domain.builder.OrderBuilder;
 import goodgames.order.domain.builder.ProgrammerBuilder;
+import goodgames.store.domain.CoffeeType;
+import goodgames.store.domain.PaymentType;
+import goodgames.store.domain.SummaryInformation;
 
+import java.io.IOException;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -23,10 +24,9 @@ public class CoffeeSoldTest {
 	private static Integer numberOfMachines;
 
 	@BeforeClass
-	public static void before() {
+	public static void before() throws IOException {
 		GetPropertyValues properties = new GetPropertyValues();
-		numberOfMachines = properties.getNumberOfMachines();
-
+		numberOfMachines = properties.getPropertyValues();
 	}
 
 	@Test
@@ -36,7 +36,8 @@ public class CoffeeSoldTest {
 
 		List<Order> orders = Lists.newArrayList(order);
 
-		SummaryInformation summaryInformation = simulateOrders(orders);
+		SummaryInformation summaryInformation = simulateOrders(orders,
+				numberOfMachines);
 
 		Assert.assertEquals(new Integer(1), summaryInformation.getCoffeeSold()
 				.getTotalCoffeeSold());
@@ -51,7 +52,8 @@ public class CoffeeSoldTest {
 
 		List<Order> orders = Lists.newArrayList(orderOne, orderTwo);
 
-		SummaryInformation summaryInformation = simulateOrders(orders);
+		SummaryInformation summaryInformation = simulateOrders(orders,
+				numberOfMachines);
 
 		Assert.assertEquals(new Integer(2), summaryInformation.getCoffeeSold()
 				.getTotalCoffeeSold());
@@ -66,10 +68,11 @@ public class CoffeeSoldTest {
 
 		List<Order> orders = Lists.newArrayList(orderOne, orderTwo);
 
-		SummaryInformation summaryInformation = simulateOrders(orders);
+		SummaryInformation summaryInformation = simulateOrders(orders,
+				numberOfMachines);
 
 		Assert.assertEquals(new Integer(2), summaryInformation.getCoffeeSold()
-				.getTotalCapuccinoSold());
+				.getTotalSoldByType(CoffeeType.CAPUCCINO));
 	}
 
 	@Test
@@ -81,10 +84,11 @@ public class CoffeeSoldTest {
 
 		List<Order> orders = Lists.newArrayList(orderOne, orderTwo);
 
-		SummaryInformation summaryInformation = simulateOrders(orders);
+		SummaryInformation summaryInformation = simulateOrders(orders,
+				numberOfMachines);
 
 		Assert.assertEquals(new Integer(2), summaryInformation.getCoffeeSold()
-				.getTotalLatteSold());
+				.getTotalSoldByType(CoffeeType.LATTE));
 	}
 
 	@Test
@@ -96,10 +100,11 @@ public class CoffeeSoldTest {
 
 		List<Order> orders = Lists.newArrayList(orderOne, orderTwo);
 
-		SummaryInformation summaryInformation = simulateOrders(orders);
+		SummaryInformation summaryInformation = simulateOrders(orders,
+				numberOfMachines);
 
 		Assert.assertEquals(new Integer(2), summaryInformation.getCoffeeSold()
-				.getTotalEspressoSold());
+				.getTotalSoldByType(CoffeeType.ESPRESSO));
 	}
 
 	@Test
@@ -111,12 +116,13 @@ public class CoffeeSoldTest {
 
 		List<Order> orders = Lists.newArrayList(orderOne, orderTwo);
 
-		SummaryInformation summaryInformation = simulateOrders(orders);
+		SummaryInformation summaryInformation = simulateOrders(orders,
+				numberOfMachines);
 
 		Assert.assertEquals(new Integer(1), summaryInformation.getCoffeeSold()
-				.getTotalEspressoSold());
+				.getTotalSoldByType(CoffeeType.ESPRESSO));
 		Assert.assertEquals(new Integer(1), summaryInformation.getCoffeeSold()
-				.getTotalLatteSold());
+				.getTotalSoldByType(CoffeeType.LATTE));
 	}
 
 	@Test
@@ -126,9 +132,17 @@ public class CoffeeSoldTest {
 
 		List<Order> orders = Lists.newArrayList(order);
 
-		SummaryInformation summaryInformation = simulateOrders(orders);
+		Integer numberOfMachines = 1;
 
-		Assert.assertTrue(summaryInformation.getMachinesSummary());
+		SummaryInformation summaryInformation = simulateOrders(orders,
+				numberOfMachines);
+
+		Integer expectedCoffeeSold = 1;
+
+		Integer machineNumber = 1;
+
+		Assert.assertEquals(expectedCoffeeSold, summaryInformation
+				.getMachinesSummary().get(machineNumber).getTotalSold());
 
 	}
 
@@ -140,7 +154,8 @@ public class CoffeeSoldTest {
 		return programmer;
 	}
 
-	private SummaryInformation simulateOrders(List<Order> orders) {
+	private SummaryInformation simulateOrders(List<Order> orders,
+			Integer numberOfMachines) {
 
 		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator(
 				numberOfMachines).getCoffeeMachineInformation(orders);

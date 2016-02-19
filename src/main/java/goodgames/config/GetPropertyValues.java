@@ -1,4 +1,4 @@
-package goodgames.common.config;
+package goodgames.config;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,7 +10,7 @@ public class GetPropertyValues {
 	private InputStream inputStream;
 	private Integer numberOfMachines;
 
-	public Integer getPropValues() throws IOException {
+	public Integer getPropertyValues() throws IOException {
 
 		try {
 			Properties prop = new Properties();

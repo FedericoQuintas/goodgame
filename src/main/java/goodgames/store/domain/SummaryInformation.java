@@ -1,12 +1,14 @@
-package goodgames.common.domain;
+package goodgames.store.domain;
 
 import goodgames.order.domain.Order;
 import goodgames.order.exception.EmptyOrderListException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 public class SummaryInformation {
 
@@ -14,17 +16,26 @@ public class SummaryInformation {
 	private Double totalAmmountOfTime;
 	private List<Double> orderTimes = Lists.newArrayList();
 	private CoffeeSoldSummary coffeeSoldSummary;
+	private Map<Integer, MachineSummary> summaryByMachineNumber;
 
-	public SummaryInformation() {
+	public SummaryInformation(Integer numberOfMachines) {
 		totalAmmountOfTime = new Double(0);
 		coffeeSoldSummary = new CoffeeSoldSummary();
+		generateMachineSummaries(numberOfMachines);
 	}
 
 	public void addOrder(Order order) {
 		addTotalTimeOfTime(order.getTotalAmmountOfTime());
 		addOrderTime(order);
 		coffeeSoldSummary.addTotalOfCoffeeSold(order);
+		addToMachineSummary(order);
 
+	}
+
+	private void addToMachineSummary(Order order) {
+		MachineSummary machineSummary = summaryByMachineNumber.get(order
+				.getMachineNumber());
+		machineSummary.addOrder(order);
 	}
 
 	private void addOrderTime(Order order) {
@@ -71,8 +82,15 @@ public class SummaryInformation {
 		return total / orderTimes.size();
 	}
 
-	public boolean getMachinesSummary() {
-		
-		return false;
+	public Map<Integer, MachineSummary> getMachinesSummary() {
+		return summaryByMachineNumber;
+	}
+
+	private void generateMachineSummaries(Integer numberOfMachines) {
+		summaryByMachineNumber = Maps.newHashMap();
+
+		for (Integer machineNumber = 1; machineNumber <= numberOfMachines; machineNumber++) {
+			summaryByMachineNumber.put(machineNumber, new MachineSummary());
+		}
 	}
 }

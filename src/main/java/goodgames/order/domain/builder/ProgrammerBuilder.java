@@ -1,7 +1,7 @@
 package goodgames.order.domain.builder;
 
-import goodgames.common.domain.CoffeeType;
 import goodgames.order.domain.Programmer;
+import goodgames.store.domain.CoffeeType;
 
 public class ProgrammerBuilder {
 

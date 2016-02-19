@@ -1,25 +1,26 @@
 package goodgames;
 
-import goodgames.common.domain.CoffeeType;
-import goodgames.common.domain.PaymentType;
-import goodgames.common.domain.SummaryInformation;
 import goodgames.order.domain.Order;
+import goodgames.store.domain.CoffeeType;
+import goodgames.store.domain.PaymentType;
+import goodgames.store.domain.SummaryInformation;
 
 import java.util.List;
+import java.util.Random;
 
 public class CoffeeShopSimulator {
 
 	private SummaryInformation summaryInformation;
 	private Integer numberOfMachines;
-	
-	public CoffeeShopSimulator(Integer numberOfMachines){
+
+	public CoffeeShopSimulator(Integer numberOfMachines) {
 		this.numberOfMachines = numberOfMachines;
 	}
 
 	public SummaryInformation getCoffeeMachineInformation(List<Order> orders) {
 
-		summaryInformation = new SummaryInformation();
-		
+		summaryInformation = new SummaryInformation(numberOfMachines);
+
 		for (Order order : orders) {
 			selectCoffeeType(order);
 			payCoffee(order);
@@ -45,7 +46,14 @@ public class CoffeeShopSimulator {
 	}
 
 	private void selectMachine(Order order) {
-		
+		Integer machineNumber = obtainRandomMachineNumber();
+		order.setMachineNumber(machineNumber);
+	}
+
+	private Integer obtainRandomMachineNumber() {
+		Random rand = new Random();
+		Integer machineNumber = rand.nextInt(numberOfMachines) + 1;
+		return machineNumber;
 	}
 
 	private void takeCupAndLeave(Order order) {
@@ -54,11 +62,11 @@ public class CoffeeShopSimulator {
 
 	private void fillCup(Order order) {
 		CoffeeType programmerCoffeeType = order.getProgrammer().getCoffeeType();
-		if(programmerCoffeeType.equals(CoffeeType.ESPRESSO)){
+		if (programmerCoffeeType.equals(CoffeeType.ESPRESSO)) {
 			order.addAccumulatedTime(new Double(0.25));
-		}else if(programmerCoffeeType.equals(CoffeeType.LATTE)){
+		} else if (programmerCoffeeType.equals(CoffeeType.LATTE)) {
 			order.addAccumulatedTime(new Double(0.5));
-		}else{
+		} else {
 			order.addAccumulatedTime(new Double(0.75));
 		}
 	}

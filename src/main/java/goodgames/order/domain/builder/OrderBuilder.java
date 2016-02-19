@@ -1,8 +1,8 @@
 package goodgames.order.domain.builder;
 
-import goodgames.common.domain.PaymentType;
 import goodgames.order.domain.Order;
 import goodgames.order.domain.Programmer;
+import goodgames.store.domain.PaymentType;
 
 public class OrderBuilder {
 

@@ -1,12 +1,13 @@
 package goodgames.order.domain;
 
-import goodgames.common.domain.PaymentType;
+import goodgames.store.domain.PaymentType;
 
 public class Order {
 
 	private Double totalAmmountOfTime;
 	private Programmer programmer;
 	private PaymentType paymentType;
+	private Integer machineNumber;
 
 	public Order(Programmer programmer, PaymentType paymentType) {
 		this.totalAmmountOfTime = new Double(0);
@@ -27,7 +28,16 @@ public class Order {
 	}
 
 	public void addAccumulatedTime(Double timeToAdd) {
-		totalAmmountOfTime =  totalAmmountOfTime + timeToAdd;
+		totalAmmountOfTime = totalAmmountOfTime + timeToAdd;
+	}
+
+	public void setMachineNumber(Integer machineNumber) {
+		this.machineNumber = machineNumber;
+
+	}
+
+	public Integer getMachineNumber() {
+		return machineNumber;
 	}
 
 }
