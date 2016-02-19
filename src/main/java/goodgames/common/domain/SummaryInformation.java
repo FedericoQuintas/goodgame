@@ -70,4 +70,9 @@ public class SummaryInformation {
 
 		return total / orderTimes.size();
 	}
+
+	public boolean getMachinesSummary() {
+		
+		return false;
+	}
 }

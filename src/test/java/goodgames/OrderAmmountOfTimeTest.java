@@ -1,6 +1,7 @@
 package goodgames;
 
 import static org.junit.Assert.fail;
+import goodgames.common.config.GetPropertyValues;
 import goodgames.common.domain.CoffeeType;
 import goodgames.common.domain.PaymentType;
 import goodgames.common.domain.SummaryInformation;
@@ -14,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
@@ -21,6 +23,14 @@ import com.google.common.collect.Lists;
 public class OrderAmmountOfTimeTest {
 
 	private static final String NO_ORDERS_HAVE_BEEN_MADE_YET = "No orders have been made yet";
+
+	private static Integer numberOfMachines;
+
+	@BeforeClass
+	public static void before() {
+		GetPropertyValues properties = new GetPropertyValues();
+		numberOfMachines = properties.getNumberOfMachines();
+	}
 
 	@Test
 	public void whenAProgrammerLikesEspressoAndPaysCashThenTakesTwoSecondsAndAQuarter() {
@@ -136,13 +146,18 @@ public class OrderAmmountOfTimeTest {
 
 		List<Order> orders = Arrays.asList(orderOne, orderTwo);
 
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
-				.getCoffeeMachineInformation(orders);
+		SummaryInformation coffeeMachineInformation = obtainSummaryInformation(orders);
 
 		Double fastestTimeExpected = new Double(2.75);
 
 		Assert.assertEquals(fastestTimeExpected,
 				coffeeMachineInformation.getFastestAmmountOfTime());
+	}
+
+	private SummaryInformation obtainSummaryInformation(List<Order> orders) {
+		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator(
+				numberOfMachines).getCoffeeMachineInformation(orders);
+		return coffeeMachineInformation;
 	}
 
 	@Test
@@ -162,8 +177,7 @@ public class OrderAmmountOfTimeTest {
 
 		List<Order> orders = Arrays.asList(orderOne, orderTwo);
 
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
-				.getCoffeeMachineInformation(orders);
+		SummaryInformation coffeeMachineInformation = obtainSummaryInformation(orders);
 
 		Double slowestTimeExpected = new Double(2);
 		Assert.assertEquals(slowestTimeExpected,
@@ -175,8 +189,7 @@ public class OrderAmmountOfTimeTest {
 
 		List<Order> orders = Lists.newArrayList();
 
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
-				.getCoffeeMachineInformation(orders);
+		SummaryInformation coffeeMachineInformation = obtainSummaryInformation(orders);
 
 		try {
 			coffeeMachineInformation.getSlowestAmmountOfTime();
@@ -192,8 +205,7 @@ public class OrderAmmountOfTimeTest {
 
 		List<Order> orders = Lists.newArrayList();
 
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
-				.getCoffeeMachineInformation(orders);
+		SummaryInformation coffeeMachineInformation = obtainSummaryInformation(orders);
 
 		try {
 			coffeeMachineInformation.getAverageAmmountOfTime();
@@ -209,8 +221,7 @@ public class OrderAmmountOfTimeTest {
 
 		List<Order> orders = Lists.newArrayList();
 
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
-				.getCoffeeMachineInformation(orders);
+		SummaryInformation coffeeMachineInformation = obtainSummaryInformation(orders);
 
 		try {
 			coffeeMachineInformation.getFastestAmmountOfTime();
@@ -238,8 +249,7 @@ public class OrderAmmountOfTimeTest {
 
 		List<Order> orders = Arrays.asList(orderOne, orderTwo);
 
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
-				.getCoffeeMachineInformation(orders);
+		SummaryInformation coffeeMachineInformation = obtainSummaryInformation(orders);
 
 		Double averageTimeExpected = new Double(2.375);
 		Assert.assertEquals(averageTimeExpected,
@@ -259,8 +269,7 @@ public class OrderAmmountOfTimeTest {
 	private SummaryInformation simulateOrders(Order order) {
 		List<Order> orders = Arrays.asList(order);
 
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
-				.getCoffeeMachineInformation(orders);
+		SummaryInformation coffeeMachineInformation = obtainSummaryInformation(orders);
 		return coffeeMachineInformation;
 	}
 }

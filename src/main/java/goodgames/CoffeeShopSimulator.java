@@ -10,6 +10,11 @@ import java.util.List;
 public class CoffeeShopSimulator {
 
 	private SummaryInformation summaryInformation;
+	private Integer numberOfMachines;
+	
+	public CoffeeShopSimulator(Integer numberOfMachines){
+		this.numberOfMachines = numberOfMachines;
+	}
 
 	public SummaryInformation getCoffeeMachineInformation(List<Order> orders) {
 
@@ -18,7 +23,7 @@ public class CoffeeShopSimulator {
 		for (Order order : orders) {
 			selectCoffeeType(order);
 			payCoffee(order);
-			findCoffeeMachine(order);
+			pickCoffeeFromMachine(order);
 			addOrderStatsToSummaryInformation(order);
 		}
 
@@ -30,12 +35,17 @@ public class CoffeeShopSimulator {
 		summaryInformation.addOrder(order);
 	}
 
-	private void findCoffeeMachine(Order order) {
+	private void pickCoffeeFromMachine(Order order) {
+		selectMachine(order);
 		findACup(order);
 		putCupUnderTheOutlet(order);
 		pickPaidCoffeeType(order);
 		fillCup(order);
 		takeCupAndLeave(order);
+	}
+
+	private void selectMachine(Order order) {
+		
 	}
 
 	private void takeCupAndLeave(Order order) {
