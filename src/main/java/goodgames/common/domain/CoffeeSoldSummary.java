@@ -1,4 +1,6 @@
-package goodgames.domain;
+package goodgames.common.domain;
+
+import goodgames.order.domain.Order;
 
 public class CoffeeSoldSummary {
 

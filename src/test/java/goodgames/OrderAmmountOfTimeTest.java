@@ -1,12 +1,12 @@
 package goodgames;
 
-import goodgames.domain.CoffeeType;
-import goodgames.domain.Order;
-import goodgames.domain.PaymentType;
-import goodgames.domain.Programmer;
-import goodgames.domain.SummaryInformation;
-import goodgames.domain.builder.OrderBuilder;
-import goodgames.domain.builder.ProgrammerBuilder;
+import goodgames.common.domain.CoffeeType;
+import goodgames.common.domain.PaymentType;
+import goodgames.common.domain.SummaryInformation;
+import goodgames.order.domain.Order;
+import goodgames.order.domain.Programmer;
+import goodgames.order.domain.builder.OrderBuilder;
+import goodgames.order.domain.builder.ProgrammerBuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -162,6 +162,31 @@ public class OrderAmmountOfTimeTest {
 		Double slowestTimeExpected = new Double(2);
 		Assert.assertEquals(slowestTimeExpected,
 				coffeeMachineInformation.getSlowestAmmountOfTime());
+	}
+
+	@Test
+	public void whenTwoProgrammersMakesOrdersThenAverageTimeCalculatedCorrectly() {
+
+		Programmer programmerOne = buildProgrammer(CoffeeType.ESPRESSO);
+
+		OrderBuilder orderBuilder = new OrderBuilder();
+
+		Order orderOne = orderBuilder.withPaymentType(PaymentType.CARD)
+				.withProgrammer(programmerOne).build();
+
+		Programmer programmerTwo = buildProgrammer(CoffeeType.CAPUCCINO);
+
+		Order orderTwo = orderBuilder.withPaymentType(PaymentType.CASH)
+				.withProgrammer(programmerTwo).build();
+
+		List<Order> orders = Arrays.asList(orderOne, orderTwo);
+
+		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
+				.getCoffeeMachineInformation(orders);
+
+		Double averageTimeExpected = new Double(2.375);
+		Assert.assertEquals(averageTimeExpected,
+				coffeeMachineInformation.getAverageAmmountOfTime());
 	}
 
 	private Programmer buildProgrammer(CoffeeType coffeType) {

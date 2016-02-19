@@ -1,12 +1,16 @@
-package goodgames.domain;
+package goodgames.common.domain;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
+import goodgames.order.domain.Order;
+
+import java.util.Collections;
+import java.util.List;
+
+import com.google.common.collect.Lists;
 
 public class SummaryInformation {
 
 	private Double totalAmmountOfTime;
-	private SortedSet<Double> orderTimes = new TreeSet<>();
+	private List<Double> orderTimes = Lists.newArrayList();
 	private CoffeeSoldSummary coffeeSoldSummary;
 
 	public SummaryInformation() {
@@ -18,6 +22,7 @@ public class SummaryInformation {
 		addTotalTimeOfTime(order.getTotalAmmountOfTime());
 		addOrderTime(order);
 		coffeeSoldSummary.addTotalOfCoffeeSold(order);
+
 	}
 
 	private void addOrderTime(Order order) {
@@ -33,15 +38,28 @@ public class SummaryInformation {
 	}
 
 	public Double getSlowestAmmountOfTime() {
-		return orderTimes.first();
+		// TODO Validate out of bounds
+		Collections.sort(orderTimes);
+		return orderTimes.get(0);
 	}
 
 	public Double getFastestAmmountOfTime() {
-		return orderTimes.last();
+		// TODO Validate out of bounds
+		Collections.sort(orderTimes);
+		return orderTimes.get(orderTimes.size() - 1);
 	}
 
 	public CoffeeSoldSummary getCoffeeSold() {
 		return coffeeSoldSummary;
 	}
 
+	public Double getAverageAmmountOfTime() {
+		// TODO Validate size = 0
+		Double total = new Double(0);
+		for (Double orderTime : orderTimes) {
+			total = total + orderTime;
+		}
+
+		return total / orderTimes.size();
+	}
 }

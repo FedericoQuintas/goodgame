@@ -1,4 +1,6 @@
-package goodgames.domain;
+package goodgames.order.domain;
+
+import goodgames.common.domain.PaymentType;
 
 public class Order {
 
