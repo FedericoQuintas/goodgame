@@ -1,6 +1,7 @@
 package goodgames.common.domain;
 
 import goodgames.order.domain.Order;
+import goodgames.order.exception.EmptyOrderListException;
 
 import java.util.Collections;
 import java.util.List;
@@ -9,6 +10,7 @@ import com.google.common.collect.Lists;
 
 public class SummaryInformation {
 
+	private static final String NO_ORDERS_HAVE_BEEN_MADE_YET = "No orders have been made yet";
 	private Double totalAmmountOfTime;
 	private List<Double> orderTimes = Lists.newArrayList();
 	private CoffeeSoldSummary coffeeSoldSummary;
@@ -38,15 +40,21 @@ public class SummaryInformation {
 	}
 
 	public Double getSlowestAmmountOfTime() {
-		// TODO Validate out of bounds
+		validateEmptyList();
 		Collections.sort(orderTimes);
 		return orderTimes.get(0);
 	}
 
 	public Double getFastestAmmountOfTime() {
-		// TODO Validate out of bounds
+		validateEmptyList();
 		Collections.sort(orderTimes);
 		return orderTimes.get(orderTimes.size() - 1);
+	}
+
+	private void validateEmptyList() {
+		if (orderTimes.isEmpty()) {
+			throw new EmptyOrderListException(NO_ORDERS_HAVE_BEEN_MADE_YET);
+		}
 	}
 
 	public CoffeeSoldSummary getCoffeeSold() {
@@ -54,7 +62,7 @@ public class SummaryInformation {
 	}
 
 	public Double getAverageAmmountOfTime() {
-		// TODO Validate size = 0
+		validateEmptyList();
 		Double total = new Double(0);
 		for (Double orderTime : orderTimes) {
 			total = total + orderTime;

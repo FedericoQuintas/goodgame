@@ -40,7 +40,6 @@ public class CoffeeShopSimulator {
 
 	private void takeCupAndLeave(Order order) {
 		order.addAccumulatedTime(new Double(0.25));
-		
 	}
 
 	private void fillCup(Order order) {

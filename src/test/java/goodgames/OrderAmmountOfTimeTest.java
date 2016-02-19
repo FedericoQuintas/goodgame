@@ -1,5 +1,6 @@
 package goodgames;
 
+import static org.junit.Assert.fail;
 import goodgames.common.domain.CoffeeType;
 import goodgames.common.domain.PaymentType;
 import goodgames.common.domain.SummaryInformation;
@@ -7,6 +8,7 @@ import goodgames.order.domain.Order;
 import goodgames.order.domain.Programmer;
 import goodgames.order.domain.builder.OrderBuilder;
 import goodgames.order.domain.builder.ProgrammerBuilder;
+import goodgames.order.exception.EmptyOrderListException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +16,11 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
+
 public class OrderAmmountOfTimeTest {
+
+	private static final String NO_ORDERS_HAVE_BEEN_MADE_YET = "No orders have been made yet";
 
 	@Test
 	public void whenAProgrammerLikesEspressoAndPaysCashThenTakesTwoSecondsAndAQuarter() {
@@ -163,6 +169,41 @@ public class OrderAmmountOfTimeTest {
 		Assert.assertEquals(slowestTimeExpected,
 				coffeeMachineInformation.getSlowestAmmountOfTime());
 	}
+
+	@Test
+	public void whenOrderListIsEmptyAndAsksForSlowestOrderThenExceptionIsThrown() {
+
+		List<Order> orders = Lists.newArrayList();
+
+		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
+				.getCoffeeMachineInformation(orders);
+
+		try {
+			coffeeMachineInformation.getSlowestAmmountOfTime();
+			fail();
+		} catch (EmptyOrderListException exception) {
+			Assert.assertTrue(exception.getMessage().equals(
+					NO_ORDERS_HAVE_BEEN_MADE_YET));
+		}
+	}
+	
+	@Test
+	public void whenOrderListIsEmptyAndAsksForFastestOrderThenExceptionIsThrown() {
+
+		List<Order> orders = Lists.newArrayList();
+
+		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator()
+				.getCoffeeMachineInformation(orders);
+
+		try {
+			coffeeMachineInformation.getFastestAmmountOfTime();
+			fail();
+		} catch (EmptyOrderListException exception) {
+			Assert.assertTrue(exception.getMessage().equals(
+					NO_ORDERS_HAVE_BEEN_MADE_YET));
+		}
+	}
+
 
 	@Test
 	public void whenTwoProgrammersMakesOrdersThenAverageTimeCalculatedCorrectly() {
