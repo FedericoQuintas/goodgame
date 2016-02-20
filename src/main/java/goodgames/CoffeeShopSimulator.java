@@ -46,15 +46,6 @@ public class CoffeeShopSimulator {
 
 	}
 
-	private void generateMachineSemaphores(Integer numberOfMachines) {
-		semaphoresByMachine = Maps.newHashMap();
-		for (int i = 1; i <= numberOfMachines; i++) {
-			semaphoresByMachine.put(i, new Semaphore(
-					PROGRAMMERS_GETTING_PAID_COFFEE_LIMIT));
-
-		}
-	}
-
 	public SummaryInformation getCoffeeMachineInformation(
 			final List<Order> orders) {
 
@@ -63,9 +54,19 @@ public class CoffeeShopSimulator {
 		summaryInformation = new SummaryInformation(numberOfMachines);
 
 		List<Future<?>> futures = processOrders(orders);
+
 		waitUntilTerminate(futures);
+
 		return summaryInformation;
 
+	}
+
+	private List<Future<?>> processOrders(List<Order> orders) {
+		List<Future<?>> futures = Lists.newArrayList();
+		for (final Order order : orders) {
+			futures.add(processOrder(order));
+		}
+		return futures;
 	}
 
 	private void waitUntilTerminate(List<Future<?>> futures) {
@@ -77,14 +78,6 @@ public class CoffeeShopSimulator {
 						+ e.getMessage());
 			}
 		}
-	}
-
-	private List<Future<?>> processOrders(List<Order> orders) {
-		List<Future<?>> futures = Lists.newArrayList();
-		for (final Order order : orders) {
-			futures.add(processOrder(order));
-		}
-		return futures;
 	}
 
 	private Future<?> processOrder(final Order order) {
@@ -180,4 +173,12 @@ public class CoffeeShopSimulator {
 
 	}
 
+	private void generateMachineSemaphores(Integer numberOfMachines) {
+		semaphoresByMachine = Maps.newHashMap();
+		for (int i = 1; i <= numberOfMachines; i++) {
+			semaphoresByMachine.put(i, new Semaphore(
+					PROGRAMMERS_GETTING_PAID_COFFEE_LIMIT));
+
+		}
+	}
 }

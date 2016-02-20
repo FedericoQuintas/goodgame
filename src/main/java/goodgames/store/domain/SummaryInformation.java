@@ -3,29 +3,31 @@ package goodgames.store.domain;
 import goodgames.order.domain.Order;
 import goodgames.order.exception.EmptyOrderListException;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.AtomicDouble;
 
 public class SummaryInformation {
 
 	private static final String NO_ORDERS_HAVE_BEEN_MADE_YET = "No orders have been made yet";
-	private Double totalAmmountOfTime;
-	private List<Double> orderTimes = Lists.newArrayList();
+	private AtomicDouble totalAmmountOfTime;
+	private List<Double> orderTimes = Collections
+			.synchronizedList(new ArrayList<Double>());
 	private CoffeeSoldSummary coffeeSoldSummary;
 	private Map<Integer, MachineSummary> summaryByMachineNumber;
 
 	public SummaryInformation(Integer numberOfMachines) {
-		totalAmmountOfTime = new Double(0);
+		totalAmmountOfTime = new AtomicDouble(0);
 		coffeeSoldSummary = new CoffeeSoldSummary();
 		generateMachineSummaries(numberOfMachines);
 	}
 
 	public void addOrder(Order order) {
-		addTotalTimeOfTime(order.getTotalAmmountOfTime());
+		addTotalAmmountOfTime(order.getTotalAmmountOfTime());
 		addOrderTime(order);
 		coffeeSoldSummary.addTotalOfCoffeeSold(order);
 		addToMachineSummary(order);
@@ -39,15 +41,16 @@ public class SummaryInformation {
 	}
 
 	private void addOrderTime(Order order) {
+
 		orderTimes.add(order.getTotalAmmountOfTime());
 	}
 
-	private void addTotalTimeOfTime(Double totalAmmountOfTime) {
-		this.totalAmmountOfTime = getTotalAmmountOfTime() + totalAmmountOfTime;
+	private void addTotalAmmountOfTime(Double totalAmmountOfTime) {
+		this.totalAmmountOfTime.addAndGet(totalAmmountOfTime);
 	}
 
 	public Double getTotalAmmountOfTime() {
-		return totalAmmountOfTime;
+		return totalAmmountOfTime.doubleValue();
 	}
 
 	public Double getSlowestAmmountOfTime() {
@@ -79,7 +82,7 @@ public class SummaryInformation {
 			total = total + orderTime;
 		}
 
-		return total / orderTimes.size();
+		return total / new Double(orderTimes.size());
 	}
 
 	public Map<Integer, MachineSummary> getMachinesSummary() {

@@ -1,10 +1,8 @@
 package goodgames;
 
-import static org.junit.Assert.fail;
 import goodgames.config.GetPropertyValues;
 import goodgames.order.domain.Order;
 import goodgames.order.domain.builder.OrderBuilder;
-import goodgames.order.exception.EmptyOrderListException;
 import goodgames.store.domain.CoffeeType;
 import goodgames.store.domain.PaymentType;
 import goodgames.store.domain.SummaryInformation;
@@ -20,8 +18,6 @@ import org.junit.Test;
 import com.google.common.collect.Lists;
 
 public class OrderAmmountOfTimeTest {
-
-	private static final String NO_ORDERS_HAVE_BEEN_MADE_YET = "No orders have been made yet";
 
 	private static Integer numberOfMachines;
 

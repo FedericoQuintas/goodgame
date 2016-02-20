@@ -3,20 +3,21 @@ package goodgames.store.domain;
 import goodgames.order.domain.Order;
 
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.common.collect.Maps;
 
 public class CoffeeSoldSummary {
 
-	private Map<CoffeeType, Integer> totalPerType;
-	private Integer totalCoffeeSold = new Integer(0);
+	private Map<CoffeeType, AtomicInteger> totalPerType;
+	private AtomicInteger totalCoffeeSold = new AtomicInteger(0);
 
 	public Integer getTotalCoffeeSold() {
-		return totalCoffeeSold;
+		return totalCoffeeSold.intValue();
 	}
 
 	public CoffeeSoldSummary() {
-		generateDefaultCoffePerTypeValues();
+		generateDefaultCoffeePerTypeValues();
 	}
 
 	public void addTotalOfCoffeeSold(Order order) {
@@ -25,24 +26,23 @@ public class CoffeeSoldSummary {
 	}
 
 	private void addByType(CoffeeType coffeeType) {
-		Integer coffeeTypeCurrentTotal = totalPerType.get(coffeeType);
-		coffeeTypeCurrentTotal++;
-		totalPerType.put(coffeeType, coffeeTypeCurrentTotal);
+		AtomicInteger coffeeTypeCurrentTotal = totalPerType.get(coffeeType);
+		coffeeTypeCurrentTotal.incrementAndGet();
 	}
 
 	private void addTotalCoffeeSold() {
-		totalCoffeeSold++;
+		totalCoffeeSold.incrementAndGet();
 	}
 
-	private void generateDefaultCoffePerTypeValues() {
+	private void generateDefaultCoffeePerTypeValues() {
 		totalPerType = Maps.newHashMap();
 		for (CoffeeType coffeeType : CoffeeType.values()) {
-			totalPerType.put(coffeeType, 0);
+			totalPerType.put(coffeeType, new AtomicInteger(0));
 		}
 	}
 
 	public Integer getTotalSoldByType(CoffeeType coffeeType) {
-		return totalPerType.get(coffeeType);
+		return totalPerType.get(coffeeType).intValue();
 	}
 
 }
