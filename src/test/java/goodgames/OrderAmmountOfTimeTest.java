@@ -3,9 +3,7 @@ package goodgames;
 import static org.junit.Assert.fail;
 import goodgames.config.GetPropertyValues;
 import goodgames.order.domain.Order;
-import goodgames.order.domain.Programmer;
 import goodgames.order.domain.builder.OrderBuilder;
-import goodgames.order.domain.builder.ProgrammerBuilder;
 import goodgames.order.exception.EmptyOrderListException;
 import goodgames.store.domain.CoffeeType;
 import goodgames.store.domain.PaymentType;
@@ -36,12 +34,10 @@ public class OrderAmmountOfTimeTest {
 	@Test
 	public void whenAProgrammerLikesEspressoAndPaysCashThenTakesTwoSecondsAndAQuarter() {
 
-		Programmer programmer = buildProgrammer(CoffeeType.ESPRESSO);
-
 		OrderBuilder orderBuilder = new OrderBuilder();
 
 		Order order = orderBuilder.withPaymentType(PaymentType.CASH)
-				.withProgrammer(programmer).build();
+				.withCoffeeType(CoffeeType.ESPRESSO).build();
 
 		SummaryInformation coffeeMachineInformation = simulateOrders(order);
 
@@ -52,12 +48,10 @@ public class OrderAmmountOfTimeTest {
 	@Test
 	public void whenAProgrammerLikesEspressoAndPaysWithCreditCardThenTakesTwoSeconds() {
 
-		Programmer programmer = buildProgrammer(CoffeeType.ESPRESSO);
-
 		OrderBuilder orderBuilder = new OrderBuilder();
 
 		Order order = orderBuilder.withPaymentType(PaymentType.CARD)
-				.withProgrammer(programmer).build();
+				.withCoffeeType(CoffeeType.ESPRESSO).build();
 
 		SummaryInformation coffeeMachineInformation = simulateOrders(order);
 
@@ -68,12 +62,10 @@ public class OrderAmmountOfTimeTest {
 	@Test
 	public void whenAProgrammerLikesLatteAndPaysWithCashThenTakesTwoSecondsAndAHalf() {
 
-		Programmer programmer = buildProgrammer(CoffeeType.LATTE);
-
 		OrderBuilder orderBuilder = new OrderBuilder();
 
 		Order order = orderBuilder.withPaymentType(PaymentType.CASH)
-				.withProgrammer(programmer).build();
+				.withCoffeeType(CoffeeType.LATTE).build();
 
 		SummaryInformation coffeeMachineInformation = simulateOrders(order);
 
@@ -84,12 +76,10 @@ public class OrderAmmountOfTimeTest {
 	@Test
 	public void whenAProgrammerLikesLatteAndPaysWithCreditCardThenTakesTwoSecondsAndAQuarter() {
 
-		Programmer programmer = buildProgrammer(CoffeeType.LATTE);
-
 		OrderBuilder orderBuilder = new OrderBuilder();
 
 		Order order = orderBuilder.withPaymentType(PaymentType.CARD)
-				.withProgrammer(programmer).build();
+				.withCoffeeType(CoffeeType.LATTE).build();
 
 		SummaryInformation coffeeMachineInformation = simulateOrders(order);
 
@@ -100,12 +90,10 @@ public class OrderAmmountOfTimeTest {
 	@Test
 	public void whenAProgrammerLikesCapuccinoAndPaysWithCashThenTakesTwoSecondsAndThreeQuarters() {
 
-		Programmer programmer = buildProgrammer(CoffeeType.CAPUCCINO);
-
 		OrderBuilder orderBuilder = new OrderBuilder();
 
 		Order order = orderBuilder.withPaymentType(PaymentType.CASH)
-				.withProgrammer(programmer).build();
+				.withCoffeeType(CoffeeType.CAPUCCINO).build();
 
 		SummaryInformation coffeeMachineInformation = simulateOrders(order);
 
@@ -117,12 +105,10 @@ public class OrderAmmountOfTimeTest {
 	@Test
 	public void whenAProgrammerLikesCapuccinoAndPaysWithCashThenTakesTwoSecondsAndAHalf() {
 
-		Programmer programmer = buildProgrammer(CoffeeType.CAPUCCINO);
-
 		OrderBuilder orderBuilder = new OrderBuilder();
 
 		Order order = orderBuilder.withPaymentType(PaymentType.CARD)
-				.withProgrammer(programmer).build();
+				.withCoffeeType(CoffeeType.CAPUCCINO).build();
 
 		SummaryInformation coffeeMachineInformation = simulateOrders(order);
 
@@ -133,17 +119,13 @@ public class OrderAmmountOfTimeTest {
 	@Test
 	public void whenTwoProgrammersMakesOrdersThenFastestIsCalculatedCorrectly() {
 
-		Programmer programmerOne = buildProgrammer(CoffeeType.ESPRESSO);
-
 		OrderBuilder orderBuilder = new OrderBuilder();
 
 		Order orderOne = orderBuilder.withPaymentType(PaymentType.CARD)
-				.withProgrammer(programmerOne).build();
-
-		Programmer programmerTwo = buildProgrammer(CoffeeType.CAPUCCINO);
+				.withCoffeeType(CoffeeType.ESPRESSO).build();
 
 		Order orderTwo = orderBuilder.withPaymentType(PaymentType.CASH)
-				.withProgrammer(programmerTwo).build();
+				.withCoffeeType(CoffeeType.CAPUCCINO).build();
 
 		List<Order> orders = Arrays.asList(orderOne, orderTwo);
 
@@ -164,17 +146,13 @@ public class OrderAmmountOfTimeTest {
 	@Test
 	public void whenTwoProgrammersMakesOrdersThenSlowestIsCalculatedCorrectly() {
 
-		Programmer programmerOne = buildProgrammer(CoffeeType.ESPRESSO);
-
 		OrderBuilder orderBuilder = new OrderBuilder();
 
 		Order orderOne = orderBuilder.withPaymentType(PaymentType.CARD)
-				.withProgrammer(programmerOne).build();
-
-		Programmer programmerTwo = buildProgrammer(CoffeeType.CAPUCCINO);
+				.withCoffeeType(CoffeeType.ESPRESSO).build();
 
 		Order orderTwo = orderBuilder.withPaymentType(PaymentType.CASH)
-				.withProgrammer(programmerTwo).build();
+				.withCoffeeType(CoffeeType.CAPUCCINO).build();
 
 		List<Order> orders = Arrays.asList(orderOne, orderTwo);
 
@@ -185,68 +163,27 @@ public class OrderAmmountOfTimeTest {
 				coffeeMachineInformation.getSlowestAmmountOfTime());
 	}
 
-	@Test
+	@Test(expected =IllegalArgumentException.class)
 	public void whenOrderListIsEmptyAndAsksForSlowestOrderThenExceptionIsThrown() {
 
 		List<Order> orders = Lists.newArrayList();
 
 		SummaryInformation coffeeMachineInformation = obtainSummaryInformation(orders);
 
-		try {
 			coffeeMachineInformation.getSlowestAmmountOfTime();
-			fail();
-		} catch (EmptyOrderListException exception) {
-			Assert.assertTrue(exception.getMessage().equals(
-					NO_ORDERS_HAVE_BEEN_MADE_YET));
-		}
 	}
 
-	@Test
-	public void whenOrderListIsEmptyAndAsksForAverageOrderTimeThenExceptionIsThrown() {
-
-		List<Order> orders = Lists.newArrayList();
-
-		SummaryInformation coffeeMachineInformation = obtainSummaryInformation(orders);
-
-		try {
-			coffeeMachineInformation.getAverageAmmountOfTime();
-			fail();
-		} catch (EmptyOrderListException exception) {
-			Assert.assertTrue(exception.getMessage().equals(
-					NO_ORDERS_HAVE_BEEN_MADE_YET));
-		}
-	}
-
-	@Test
-	public void whenOrderListIsEmptyAndAsksForFastestOrderThenExceptionIsThrown() {
-
-		List<Order> orders = Lists.newArrayList();
-
-		SummaryInformation coffeeMachineInformation = obtainSummaryInformation(orders);
-
-		try {
-			coffeeMachineInformation.getFastestAmmountOfTime();
-			fail();
-		} catch (EmptyOrderListException exception) {
-			Assert.assertTrue(exception.getMessage().equals(
-					NO_ORDERS_HAVE_BEEN_MADE_YET));
-		}
-	}
 
 	@Test
 	public void whenTwoProgrammersMakesOrdersThenAverageTimeCalculatedCorrectly() {
 
-		Programmer programmerOne = buildProgrammer(CoffeeType.ESPRESSO);
-
 		OrderBuilder orderBuilder = new OrderBuilder();
 
 		Order orderOne = orderBuilder.withPaymentType(PaymentType.CARD)
-				.withProgrammer(programmerOne).build();
-
-		Programmer programmerTwo = buildProgrammer(CoffeeType.CAPUCCINO);
+				.withCoffeeType(CoffeeType.ESPRESSO).build();
 
 		Order orderTwo = orderBuilder.withPaymentType(PaymentType.CASH)
-				.withProgrammer(programmerTwo).build();
+				.withCoffeeType(CoffeeType.CAPUCCINO).build();
 
 		List<Order> orders = Arrays.asList(orderOne, orderTwo);
 
@@ -255,16 +192,6 @@ public class OrderAmmountOfTimeTest {
 		Double averageTimeExpected = new Double(2.375);
 		Assert.assertEquals(averageTimeExpected,
 				coffeeMachineInformation.getAverageAmmountOfTime());
-	}
-
-	private Programmer buildProgrammer(CoffeeType coffeType) {
-
-		ProgrammerBuilder programmerBuilder = new ProgrammerBuilder();
-
-		Programmer programmer = programmerBuilder
-				.withFavouriteCoffee(coffeType).build();
-
-		return programmer;
 	}
 
 	private SummaryInformation simulateOrders(Order order) {

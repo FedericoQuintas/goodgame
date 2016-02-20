@@ -143,7 +143,7 @@ public class CoffeeShopSimulator {
 
 	private void fillCup(Order order) {
 		Double timeForOrder = coffeeTimeCalculator.calculateFor(order
-				.getProgrammer().getCoffeeType());
+				.getCoffeeType());
 		order.addAccumulatedTime(timeForOrder);
 	}
 

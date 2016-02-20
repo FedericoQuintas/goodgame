@@ -2,9 +2,7 @@ package goodgames;
 
 import goodgames.config.GetPropertyValues;
 import goodgames.order.domain.Order;
-import goodgames.order.domain.Programmer;
 import goodgames.order.domain.builder.OrderBuilder;
-import goodgames.order.domain.builder.ProgrammerBuilder;
 import goodgames.store.domain.CoffeeType;
 import goodgames.store.domain.MachineSummary;
 import goodgames.store.domain.PaymentType;
@@ -266,14 +264,6 @@ public class CoffeeSoldTest {
 		return orders;
 	}
 
-	private Programmer buildProgrammer(CoffeeType coffeeType) {
-		ProgrammerBuilder programmerBuilder = new ProgrammerBuilder();
-
-		Programmer programmer = programmerBuilder.withFavouriteCoffee(
-				coffeeType).build();
-		return programmer;
-	}
-
 	private SummaryInformation simulateOrders(List<Order> orders,
 			Integer numberOfMachines) {
 
@@ -284,11 +274,10 @@ public class CoffeeSoldTest {
 	}
 
 	private Order generateOrder(CoffeeType coffeeType, PaymentType paymentType) {
-		Programmer programmer = buildProgrammer(coffeeType);
 		OrderBuilder orderBuilder = new OrderBuilder();
 
 		Order order = orderBuilder.withPaymentType(paymentType)
-				.withProgrammer(programmer).build();
+				.withCoffeeType(coffeeType).build();
 		return order;
 	}
 }

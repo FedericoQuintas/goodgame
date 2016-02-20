@@ -23,7 +23,7 @@ public class MachineSummary {
 
 	public void addOrder(Order order) {
 		totalSold++;
-		addByType(order.getProgrammer().getCoffeeType());
+		addByType(order.getCoffeeType());
 	}
 
 	public Integer getTotalPerType(CoffeeType coffeeType) {

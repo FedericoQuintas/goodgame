@@ -21,7 +21,7 @@ public class CoffeeSoldSummary {
 
 	public void addTotalOfCoffeeSold(Order order) {
 		addTotalCoffeeSold();
-		addByType(order.getProgrammer().getCoffeeType());
+		addByType(order.getCoffeeType());
 	}
 
 	private void addByType(CoffeeType coffeeType) {

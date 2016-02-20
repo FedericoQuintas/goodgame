@@ -2,24 +2,25 @@ package goodgames.order.domain.builder;
 
 import goodgames.common.validator.FieldValidator;
 import goodgames.order.domain.Order;
-import goodgames.order.domain.Programmer;
 import goodgames.order.exception.OrderBuilderException;
+import goodgames.store.domain.CoffeeType;
 import goodgames.store.domain.PaymentType;
 
 public class OrderBuilder {
 
 	private static final String PAYMENT_TYPE_FIELD_CANNOT_BE_NULL = "Payment type field cannot be null";
-	private static final String PROGRAMMER_FIELD_CANNOT_BE_NULL = "Programmer field cannot be null";
-	private Programmer programmer;
+	private static final String COFFEE_TYPE_FIELD_CANNOT_BE_NULL = "Coffee type field cannot be null";
+
 	private PaymentType paymentType;
+	private CoffeeType coffeeType;
 
 	public Order build() {
 		validateFields();
-		return new Order(programmer, paymentType);
+		return new Order(coffeeType, paymentType);
 	}
 
-	public OrderBuilder withProgrammer(Programmer programmer) {
-		this.programmer = programmer;
+	public OrderBuilder withCoffeeType(CoffeeType coffeeType) {
+		this.coffeeType = coffeeType;
 		return this;
 	}
 
@@ -29,8 +30,8 @@ public class OrderBuilder {
 	}
 
 	private void validateFields() {
-		FieldValidator.validateNotNull(programmer, new OrderBuilderException(
-				PROGRAMMER_FIELD_CANNOT_BE_NULL));
+		FieldValidator.validateNotNull(coffeeType, new OrderBuilderException(
+				COFFEE_TYPE_FIELD_CANNOT_BE_NULL));
 		FieldValidator.validateNotNull(paymentType, new OrderBuilderException(
 				PAYMENT_TYPE_FIELD_CANNOT_BE_NULL));
 	}

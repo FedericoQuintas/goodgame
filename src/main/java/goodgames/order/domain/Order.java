@@ -1,17 +1,18 @@
 package goodgames.order.domain;
 
+import goodgames.store.domain.CoffeeType;
 import goodgames.store.domain.PaymentType;
 
 public class Order {
 
 	private Double totalAmmountOfTime;
-	private Programmer programmer;
+	private CoffeeType coffeeType;
 	private PaymentType paymentType;
 	private Integer machineNumber;
 
-	public Order(Programmer programmer, PaymentType paymentType) {
+	public Order(CoffeeType coffeeType, PaymentType paymentType) {
 		this.totalAmmountOfTime = new Double(0);
-		this.programmer = programmer;
+		this.coffeeType = coffeeType;
 		this.paymentType = paymentType;
 	}
 
@@ -23,8 +24,8 @@ public class Order {
 		return totalAmmountOfTime;
 	}
 
-	public Programmer getProgrammer() {
-		return this.programmer;
+	public CoffeeType getCoffeeType() {
+		return this.coffeeType;
 	}
 
 	public void addAccumulatedTime(Double timeToAdd) {
