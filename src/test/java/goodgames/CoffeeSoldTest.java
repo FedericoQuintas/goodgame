@@ -6,11 +6,14 @@ import goodgames.order.domain.Programmer;
 import goodgames.order.domain.builder.OrderBuilder;
 import goodgames.order.domain.builder.ProgrammerBuilder;
 import goodgames.store.domain.CoffeeType;
+import goodgames.store.domain.MachineSummary;
 import goodgames.store.domain.PaymentType;
 import goodgames.store.domain.SummaryInformation;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import junit.framework.Assert;
 
@@ -144,6 +147,108 @@ public class CoffeeSoldTest {
 		Assert.assertEquals(expectedCoffeeSold, summaryInformation
 				.getMachinesSummary().get(machineNumber).getTotalSold());
 
+	}
+
+	@Test
+	public void when10CoffeeThenThreeMachinesSell10Coffee() {
+		Integer expectedCoffeeSold = 10;
+
+		List<Order> orders = generateOrders(expectedCoffeeSold);
+
+		Integer numberOfMachines = 10;
+
+		SummaryInformation summaryInformation = simulateOrders(orders,
+				numberOfMachines);
+
+		Map<Integer, MachineSummary> machinesSummary = summaryInformation
+				.getMachinesSummary();
+
+		Integer totalCoffeeSold = sumCoffeeSoldInMachines(machinesSummary);
+
+		Assert.assertEquals(expectedCoffeeSold, totalCoffeeSold);
+	}
+
+	@Test
+	public void whenAProgrammerBuysLatteThenOneMachineSellsOneLatte() {
+
+		Order order = generateOrder(CoffeeType.LATTE, PaymentType.CASH);
+
+		List<Order> orders = Lists.newArrayList(order);
+
+		Integer numberOfMachines = 1;
+
+		SummaryInformation summaryInformation = simulateOrders(orders,
+				numberOfMachines);
+
+		Integer expectedCoffeeSold = 1;
+
+		Integer machineNumber = 1;
+
+		Assert.assertEquals(expectedCoffeeSold, summaryInformation
+				.getMachinesSummary().get(machineNumber).getTotalPerType(CoffeeType.LATTE));
+
+	}
+	
+	@Test
+	public void whenAProgrammerBuysEspressoThenOneMachineSellsOneEspresso() {
+
+		Order order = generateOrder(CoffeeType.ESPRESSO, PaymentType.CASH);
+
+		List<Order> orders = Lists.newArrayList(order);
+
+		Integer numberOfMachines = 1;
+
+		SummaryInformation summaryInformation = simulateOrders(orders,
+				numberOfMachines);
+
+		Integer expectedCoffeeSold = 1;
+
+		Integer machineNumber = 1;
+
+		Assert.assertEquals(expectedCoffeeSold, summaryInformation
+				.getMachinesSummary().get(machineNumber).getTotalPerType(CoffeeType.ESPRESSO));
+
+	}
+	
+	
+	@Test
+	public void whenAProgrammerBuysCapuccinoThenOneMachineSellsOneCapuccino() {
+
+		Order order = generateOrder(CoffeeType.CAPUCCINO, PaymentType.CASH);
+
+		List<Order> orders = Lists.newArrayList(order);
+
+		Integer numberOfMachines = 1;
+
+		SummaryInformation summaryInformation = simulateOrders(orders,
+				numberOfMachines);
+
+		Integer expectedCoffeeSold = 1;
+
+		Integer machineNumber = 1;
+
+		Assert.assertEquals(expectedCoffeeSold, summaryInformation
+				.getMachinesSummary().get(machineNumber).getTotalPerType(CoffeeType.CAPUCCINO));
+
+	}
+	private Integer sumCoffeeSoldInMachines(
+			Map<Integer, MachineSummary> machinesSummary) {
+		Integer totalCoffeeSold = 0;
+		for (Entry<Integer, MachineSummary> machineByNumber : machinesSummary
+				.entrySet()) {
+			totalCoffeeSold = totalCoffeeSold
+					+ machinesSummary.get(machineByNumber.getKey())
+							.getTotalSold();
+		}
+		return totalCoffeeSold;
+	}
+
+	private List<Order> generateOrders(Integer expectedCoffeeSold) {
+		List<Order> orders = Lists.newArrayList();
+		for (int i = 0; i < expectedCoffeeSold; i++) {
+			orders.add(generateOrder(CoffeeType.LATTE, PaymentType.CASH));
+		}
+		return orders;
 	}
 
 	private Programmer buildProgrammer(CoffeeType coffeeType) {

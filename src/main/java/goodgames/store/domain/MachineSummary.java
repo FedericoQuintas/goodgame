@@ -21,6 +21,15 @@ public class MachineSummary {
 		return totalSold;
 	}
 
+	public void addOrder(Order order) {
+		totalSold++;
+		addByType(order.getProgrammer().getCoffeeType());
+	}
+
+	public Integer getTotalPerType(CoffeeType coffeeType) {
+		return totalPerType.get(coffeeType);
+	}
+
 	private void generateDefaultCoffePerTypeValues() {
 		totalPerType = Maps.newHashMap();
 		for (CoffeeType coffeeType : CoffeeType.values()) {
@@ -28,9 +37,10 @@ public class MachineSummary {
 		}
 	}
 
-	public void addOrder(Order order) {
-		totalSold++;
-
+	private void addByType(CoffeeType coffeeType) {
+		Integer coffeeTypeCurrentTotal = totalPerType.get(coffeeType);
+		coffeeTypeCurrentTotal++;
+		totalPerType.put(coffeeType, coffeeTypeCurrentTotal);
 	}
 
 }
