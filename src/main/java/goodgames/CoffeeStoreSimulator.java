@@ -1,7 +1,7 @@
 package goodgames;
 
 import goodgames.order.domain.Order;
-import goodgames.store.domain.CoffeTimeCalculator;
+import goodgames.store.domain.CoffeeTimeCalculator;
 import goodgames.store.domain.PaymentTypeTimeCalculator;
 import goodgames.store.domain.SummaryInformation;
 
@@ -17,7 +17,8 @@ import java.util.concurrent.Semaphore;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-public class CoffeeShopSimulator {
+public class CoffeeStoreSimulator {
+	
 	private static final Double SELECT_COFFEE_TYPE_TIME = new Double(0.5);
 	private static final Double PUT_CUP_UNDER_OUTLET_TIME = new Double(0.25);
 	private static final Double PICK_PAID_COFFEE_TIME = new Double(0.25);
@@ -29,15 +30,15 @@ public class CoffeeShopSimulator {
 	private SummaryInformation summaryInformation;
 	private Integer numberOfMachines;
 	private ExecutorService executor;
-	private CoffeTimeCalculator coffeeTimeCalculator;
+	private CoffeeTimeCalculator coffeeTimeCalculator;
 	private PaymentTypeTimeCalculator paymentTypeTimeCalculator;
 	private final Semaphore selectCoffeeTypeSemaphore;
 	private final Semaphore payCoffeeTypeSemaphore;
 	private Map<Integer, Semaphore> semaphoresByMachine;
 
-	public CoffeeShopSimulator(Integer numberOfMachines) {
+	public CoffeeStoreSimulator(Integer numberOfMachines) {
 		this.numberOfMachines = numberOfMachines;
-		coffeeTimeCalculator = new CoffeTimeCalculator();
+		coffeeTimeCalculator = new CoffeeTimeCalculator();
 		paymentTypeTimeCalculator = new PaymentTypeTimeCalculator();
 		selectCoffeeTypeSemaphore = new Semaphore(
 				PROGRAMMERS_SELECTING_COFFEE_LIMIT);
@@ -46,8 +47,7 @@ public class CoffeeShopSimulator {
 
 	}
 
-	public SummaryInformation getCoffeeMachineInformation(
-			final List<Order> orders) {
+	public SummaryInformation getCoffeeMachineInformation(List<Order> orders) {
 
 		executor = Executors.newFixedThreadPool(orders.size());
 

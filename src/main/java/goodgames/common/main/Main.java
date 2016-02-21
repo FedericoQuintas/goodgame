@@ -1,20 +1,15 @@
 package goodgames.common.main;
 
-import goodgames.CoffeeShopSimulator;
-import goodgames.config.GetPropertyValues;
-import goodgames.order.domain.Order;
-import goodgames.order.domain.builder.OrderBuilder;
+import goodgames.config.MVCConfiguration;
 import goodgames.store.domain.CoffeeType;
 import goodgames.store.domain.MachineSummary;
-import goodgames.store.domain.PaymentType;
 import goodgames.store.domain.SummaryInformation;
+import goodgames.store.service.StoreServiceImpl;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map.Entry;
-import java.util.Random;
 
-import com.google.common.collect.Lists;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main {
 
@@ -27,52 +22,35 @@ public class Main {
 	private static final String AVERAGE_AMMOUNT_OF_TIME = "Average ammount of time: ";
 	private static final String TOTAL_AMMOUNT_OF_TIME = "Total ammount of time: ";
 	private static final String SLOWEST_PROGRAMMER = "Slowest Programmer: ";
-	private static List<PaymentType> paymentTypes;
 
 	public static void main(String[] args) throws IOException {
-		
+
+		@SuppressWarnings("resource")
+		AnnotationConfigApplicationContext contexto = new AnnotationConfigApplicationContext();
+		contexto.register(MVCConfiguration.class);
+		contexto.refresh();
+
 		validateArguments(args);
 
-		loadPaymentTypes();
 		Integer numberOfEspressoOrders = Integer.parseInt(args[0]);
 		Integer numberOfLatteOrders = Integer.parseInt(args[1]);
 		Integer numberOfCapuccinoOrders = Integer.parseInt(args[2]);
-		Integer numberOfMachines = getNumberOfMachines();
 
-		List<Order> orders = generateOrders(numberOfEspressoOrders,
-				numberOfLatteOrders, numberOfCapuccinoOrders);
-
-		SummaryInformation summaryInformation = simulateOrders(orders,
-				numberOfMachines);
+		SummaryInformation summaryInformation = new StoreServiceImpl()
+				.getSummaryInformation(numberOfEspressoOrders,
+						numberOfLatteOrders, numberOfCapuccinoOrders);
 
 		printAmmountOfTimeInformation(summaryInformation);
 		printCoffeeSoldInformation(summaryInformation);
 		printCoffeeByMachineInformation(summaryInformation);
+
 		System.exit(0);
 	}
 
 	private static void validateArguments(String[] args) {
-		if(args.length < 3){
+		if (args.length < 3) {
 			throw new IllegalArgumentException();
-			}
-	}
-
-	private static void loadPaymentTypes() {
-		paymentTypes = Lists.newArrayList();
-		for (PaymentType paymentType : PaymentType.values()) {
-			paymentTypes.add(paymentType);
 		}
-	}
-
-	private static List<Order> generateOrders(Integer numberOfEspressoOrders,
-			Integer numberOfLatteOrders, Integer numberOfCapuccinoOrders) {
-		List<Order> orders = Lists.newArrayList();
-		orders.addAll(generateOrders(numberOfEspressoOrders,
-				CoffeeType.ESPRESSO));
-		orders.addAll(generateOrders(numberOfLatteOrders, CoffeeType.LATTE));
-		orders.addAll(generateOrders(numberOfCapuccinoOrders,
-				CoffeeType.CAPUCCINO));
-		return orders;
 	}
 
 	private static void printCoffeeByMachineInformation(
@@ -170,43 +148,6 @@ public class Main {
 				.append(summaryInformation.getTotalAmmountOfTime()).toString();
 
 		System.out.println(ammountOfTime);
-	}
-
-	private static SummaryInformation simulateOrders(List<Order> orders,
-			Integer numberOfMachines) {
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator(
-				numberOfMachines).getCoffeeMachineInformation(orders);
-
-		return coffeeMachineInformation;
-	}
-
-	private static List<Order> generateOrders(Integer expectedOrders,
-			CoffeeType coffeeType) {
-		List<Order> orders = Lists.newArrayList();
-		for (int i = 0; i < expectedOrders; i++) {
-			orders.add(generateOrder(coffeeType));
-		}
-		return orders;
-	}
-
-	private static Order generateOrder(CoffeeType coffeeType) {
-		OrderBuilder orderBuilder = new OrderBuilder();
-
-		PaymentType paymentType = obtainRandomPaymentType();
-		Order order = orderBuilder.withPaymentType(paymentType)
-				.withCoffeeType(coffeeType).build();
-		return order;
-	}
-
-	private static Integer getNumberOfMachines() throws IOException {
-		GetPropertyValues properties = new GetPropertyValues();
-		return properties.getPropertyValues();
-	}
-
-	private static PaymentType obtainRandomPaymentType() {
-		Random rand = new Random();
-		Integer paymentTypeIndex = rand.nextInt(PaymentType.values().length);
-		return paymentTypes.get(paymentTypeIndex);
 	}
 
 	private static void printTotalCoffeeTypeSoldByMachine(

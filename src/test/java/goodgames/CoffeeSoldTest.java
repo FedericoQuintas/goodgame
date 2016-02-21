@@ -27,7 +27,7 @@ public class CoffeeSoldTest {
 	@BeforeClass
 	public static void before() throws IOException {
 		GetPropertyValues properties = new GetPropertyValues();
-		defaultNumberOfMachines = properties.getPropertyValues();
+		defaultNumberOfMachines = properties.getNumberOfMachines();
 	}
 
 	@Test
@@ -232,18 +232,6 @@ public class CoffeeSoldTest {
 
 	}
 
-	@Test
-	public void when15ProgrammersBuyCoffeeThen10CanPickFavouriteTypeAtTheSameTime() {
-
-		Integer expectedCoffeeSold = 15;
-
-		List<Order> orders = generateOrders(expectedCoffeeSold);
-
-		SummaryInformation summaryInformation = simulateOrders(orders,
-				defaultNumberOfMachines);
-
-	}
-
 	private Integer sumCoffeeSoldInMachines(
 			Map<Integer, MachineSummary> machinesSummary) {
 		Integer totalCoffeeSold = 0;
@@ -267,7 +255,7 @@ public class CoffeeSoldTest {
 	private SummaryInformation simulateOrders(List<Order> orders,
 			Integer numberOfMachines) {
 
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator(
+		SummaryInformation coffeeMachineInformation = new CoffeeStoreSimulator(
 				numberOfMachines).getCoffeeMachineInformation(orders);
 
 		return coffeeMachineInformation;

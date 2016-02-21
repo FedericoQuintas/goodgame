@@ -5,12 +5,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import javax.annotation.Resource;
+
+@Resource(name = "getPropertyValues")
 public class GetPropertyValues {
 
 	private InputStream inputStream;
 	private Integer numberOfMachines;
 
-	public Integer getPropertyValues() throws IOException {
+	public GetPropertyValues() throws IOException {
 
 		try {
 			Properties prop = new Properties();
@@ -34,7 +37,6 @@ public class GetPropertyValues {
 		} finally {
 			inputStream.close();
 		}
-		return numberOfMachines;
 	}
 
 	public Integer getNumberOfMachines() {

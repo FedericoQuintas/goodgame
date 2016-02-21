@@ -24,7 +24,7 @@ public class OrderAmmountOfTimeTest {
 	@BeforeClass
 	public static void before() throws IOException {
 		GetPropertyValues properties = new GetPropertyValues();
-		numberOfMachines = properties.getPropertyValues();
+		numberOfMachines = properties.getNumberOfMachines();
 	}
 
 	@Test
@@ -134,7 +134,7 @@ public class OrderAmmountOfTimeTest {
 	}
 
 	private SummaryInformation obtainSummaryInformation(List<Order> orders) {
-		SummaryInformation coffeeMachineInformation = new CoffeeShopSimulator(
+		SummaryInformation coffeeMachineInformation = new CoffeeStoreSimulator(
 				numberOfMachines).getCoffeeMachineInformation(orders);
 		return coffeeMachineInformation;
 	}
@@ -159,16 +159,15 @@ public class OrderAmmountOfTimeTest {
 				coffeeMachineInformation.getSlowestAmmountOfTime());
 	}
 
-	@Test(expected =IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void whenOrderListIsEmptyAndAsksForSlowestOrderThenExceptionIsThrown() {
 
 		List<Order> orders = Lists.newArrayList();
 
 		SummaryInformation coffeeMachineInformation = obtainSummaryInformation(orders);
 
-			coffeeMachineInformation.getSlowestAmmountOfTime();
+		coffeeMachineInformation.getSlowestAmmountOfTime();
 	}
-
 
 	@Test
 	public void whenTwoProgrammersMakesOrdersThenAverageTimeCalculatedCorrectly() {

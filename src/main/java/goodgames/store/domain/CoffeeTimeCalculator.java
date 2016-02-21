@@ -4,14 +4,14 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-public class CoffeTimeCalculator {
+public class CoffeeTimeCalculator {
 
 	private static final Double ESPRESSO_TIME = new Double(0.25);
 	private static final Double LATTE_TIME = new Double(0.5);
 	private static final Double CAPUCCINO_TIME = new Double(0.75);
 	private Map<CoffeeType, Double> timePerType;
 
-	public CoffeTimeCalculator() {
+	public CoffeeTimeCalculator() {
 		generateDefaultCoffePerTypeValues();
 	}
 
