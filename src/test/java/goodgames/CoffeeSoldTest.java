@@ -232,18 +232,6 @@ public class CoffeeSoldTest {
 
 	}
 
-	@Test
-	public void when15ProgrammersBuyCoffeeThen10CanPickFavouriteTypeAtTheSameTime() {
-
-		Integer expectedCoffeeSold = 15;
-
-		List<Order> orders = generateOrders(expectedCoffeeSold);
-
-		SummaryInformation summaryInformation = simulateOrders(orders,
-				defaultNumberOfMachines);
-
-	}
-
 	private Integer sumCoffeeSoldInMachines(
 			Map<Integer, MachineSummary> machinesSummary) {
 		Integer totalCoffeeSold = 0;

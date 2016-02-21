@@ -18,6 +18,7 @@ import com.google.common.collect.Lists;
 
 public class Main {
 
+	private static final String INVALID_PARAMETERS = "Application needs three parameters. Please try again.";
 	private static final String SOLD_BY_MACHINE_NUMBER = " sold by machine number ";
 	private static final String TOTAL_COFFEE_SOLD_BY_MACHINE_NUMBER = "Total coffee sold by machine number ";
 	private static final String SOLD = " sold: ";
@@ -30,7 +31,7 @@ public class Main {
 	private static List<PaymentType> paymentTypes;
 
 	public static void main(String[] args) throws IOException {
-		
+
 		validateArguments(args);
 
 		loadPaymentTypes();
@@ -52,9 +53,9 @@ public class Main {
 	}
 
 	private static void validateArguments(String[] args) {
-		if(args.length < 3){
-			throw new IllegalArgumentException();
-			}
+		if (args.length < 3) {
+			throw new IllegalArgumentException(INVALID_PARAMETERS);
+		}
 	}
 
 	private static void loadPaymentTypes() {
