@@ -1,20 +1,25 @@
 package goodgames.store.resource;
 
-import goodgames.store.domain.CoffeeSoldSummary;
-import goodgames.store.domain.MachineSummary;
-
 import java.util.Map;
+
+import org.codehaus.jackson.annotate.JsonProperty;
 
 public class SummaryInformationDTO {
 
-	private Map<Integer, MachineSummary> machinesSummary;
+	@JsonProperty("machines_summary")
+	private Map<Integer, MachineSummaryDTO> machinesSummary;
+	@JsonProperty("total_ammount_of_time")
 	private Double totalAmmountOfTime;
+	@JsonProperty("slowest_ammount_of_time")
 	private Double slowestAmmountOfTime;
+	@JsonProperty("fastest_ammount_of_time")
 	private Double fastestAmmountOfTime;
-	private CoffeeSoldSummary coffeeSold;
+	@JsonProperty("coffee_sold")
+	private CoffeeSoldSummaryDTO coffeeSold;
+	@JsonProperty("average_ammount_of_time")
 	private Double averageAmmountOfTime;
 
-	public Map<Integer, MachineSummary> getMachinesSummary() {
+	public Map<Integer, MachineSummaryDTO> getMachinesSummary() {
 		return machinesSummary;
 	}
 
@@ -30,7 +35,7 @@ public class SummaryInformationDTO {
 		return fastestAmmountOfTime;
 	}
 
-	public CoffeeSoldSummary getCoffeeSold() {
+	public CoffeeSoldSummaryDTO getCoffeeSold() {
 		return coffeeSold;
 	}
 
@@ -42,8 +47,8 @@ public class SummaryInformationDTO {
 		this.averageAmmountOfTime = averageAmmountOfTime;
 	}
 
-	public void setCoffeeSold(CoffeeSoldSummary coffeeSold) {
-		this.coffeeSold = coffeeSold;
+	public void setCoffeeSold(CoffeeSoldSummaryDTO coffeeSoldSummaryDTO) {
+		this.coffeeSold = coffeeSoldSummaryDTO;
 	}
 
 	public void setFastestAmmountOfTime(Double fastestAmmountOfTime) {
@@ -58,8 +63,9 @@ public class SummaryInformationDTO {
 		this.totalAmmountOfTime = totalAmmountOfTime;
 	}
 
-	public void setMachinesSummary(Map<Integer, MachineSummary> machinesSummary) {
-		this.machinesSummary = machinesSummary;
+	public void setMachinesSummary(
+			Map<Integer, MachineSummaryDTO> machinesSummaryDTO) {
+		this.machinesSummary = machinesSummaryDTO;
 	}
 
 }

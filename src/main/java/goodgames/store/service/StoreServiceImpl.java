@@ -5,10 +5,11 @@ import goodgames.config.GetPropertyValues;
 import goodgames.order.domain.Order;
 import goodgames.order.service.OrderService;
 import goodgames.store.domain.SummaryInformation;
+import goodgames.store.domain.factory.SummaryInformationDTOFactory;
+import goodgames.store.resource.SummaryInformationDTO;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -18,30 +19,26 @@ public class StoreServiceImpl implements StoreService {
 
 	@Resource
 	private OrderService orderService;
+
 	private Integer numberOfMachines;
-	private CoffeeStoreSimulator coffeeShopSimulator;
-
-	@Resource(name = "getPropertyValues")
-	private GetPropertyValues getPropertyValues;
-
-	@PostConstruct
-	public void initialize() {
-		numberOfMachines = getNumberOfMachines();
-		coffeeShopSimulator = new CoffeeStoreSimulator(numberOfMachines);
-	}
 
 	@Override
-	public SummaryInformation getSummaryInformation(Integer numberOfEspresso,
-			Integer numberOfLatte, Integer numberOfCapuccino) {
+	public SummaryInformationDTO getSummaryInformation(
+			Integer numberOfEspresso, Integer numberOfLatte,
+			Integer numberOfCapuccino) {
 
 		List<Order> orders = orderService.generateOrders(numberOfEspresso,
 				numberOfLatte, numberOfCapuccino);
 
-		return coffeeShopSimulator.getCoffeeMachineInformation(orders);
+		numberOfMachines = getNumberOfMachines();
 
+		SummaryInformation summaryInformation = new CoffeeStoreSimulator(
+				numberOfMachines).getCoffeeMachineInformation(orders);
+
+		return SummaryInformationDTOFactory.create(summaryInformation);
 	}
 
 	private Integer getNumberOfMachines() {
-		return getPropertyValues.getNumberOfMachines();
+		return GetPropertyValues.getInstance().getNumberOfMachines();
 	}
 }

@@ -23,8 +23,8 @@ public class OrderAmmountOfTimeTest {
 
 	@BeforeClass
 	public static void before() throws IOException {
-		GetPropertyValues properties = new GetPropertyValues();
-		numberOfMachines = properties.getNumberOfMachines();
+		numberOfMachines = GetPropertyValues.getInstance()
+				.getNumberOfMachines();
 	}
 
 	@Test

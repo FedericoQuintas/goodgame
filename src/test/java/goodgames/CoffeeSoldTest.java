@@ -26,8 +26,8 @@ public class CoffeeSoldTest {
 
 	@BeforeClass
 	public static void before() throws IOException {
-		GetPropertyValues properties = new GetPropertyValues();
-		defaultNumberOfMachines = properties.getNumberOfMachines();
+		defaultNumberOfMachines = GetPropertyValues.getInstance()
+				.getNumberOfMachines();
 	}
 
 	@Test
