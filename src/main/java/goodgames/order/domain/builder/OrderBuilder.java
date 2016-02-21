@@ -2,7 +2,7 @@ package goodgames.order.domain.builder;
 
 import goodgames.common.validator.FieldValidator;
 import goodgames.order.domain.Order;
-import goodgames.order.exception.OrderBuilderException;
+import goodgames.order.exception.OrderCreationException;
 import goodgames.store.domain.CoffeeType;
 import goodgames.store.domain.PaymentType;
 
@@ -30,9 +30,9 @@ public class OrderBuilder {
 	}
 
 	private void validateFields() {
-		FieldValidator.validateNotNull(coffeeType, new OrderBuilderException(
+		FieldValidator.validateNotNull(coffeeType, new OrderCreationException(
 				COFFEE_TYPE_FIELD_CANNOT_BE_NULL));
-		FieldValidator.validateNotNull(paymentType, new OrderBuilderException(
+		FieldValidator.validateNotNull(paymentType, new OrderCreationException(
 				PAYMENT_TYPE_FIELD_CANNOT_BE_NULL));
 	}
 

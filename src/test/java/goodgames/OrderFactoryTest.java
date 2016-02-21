@@ -3,7 +3,7 @@ package goodgames;
 import static org.junit.Assert.fail;
 import goodgames.order.domain.Order;
 import goodgames.order.domain.builder.OrderBuilder;
-import goodgames.order.exception.OrderBuilderException;
+import goodgames.order.exception.OrderCreationException;
 import goodgames.store.domain.CoffeeType;
 import goodgames.store.domain.PaymentType;
 
@@ -98,7 +98,7 @@ public class OrderFactoryTest {
 		try {
 			orderBuilder.withCoffeeType(null).build();
 			fail();
-		} catch (OrderBuilderException exception) {
+		} catch (OrderCreationException exception) {
 			Assert.assertEquals(exception.getMessage(),
 					COFFEE_TYPE_FIELD_CANNOT_BE_NULL);
 		}
@@ -112,7 +112,7 @@ public class OrderFactoryTest {
 			orderBuilder.withCoffeeType(CoffeeType.CAPUCCINO)
 					.withPaymentType(null).build();
 			fail();
-		} catch (OrderBuilderException exception) {
+		} catch (OrderCreationException exception) {
 			Assert.assertEquals(exception.getMessage(),
 					PAYMENT_TYPE_FIELD_CANNOT_BE_NULL);
 		}

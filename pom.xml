@@ -78,6 +78,12 @@
 			<version>${spring.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
 		<!-- JUnit Dependency -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -118,6 +124,8 @@
 			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
+
+
 
 	</dependencies>
 </project>

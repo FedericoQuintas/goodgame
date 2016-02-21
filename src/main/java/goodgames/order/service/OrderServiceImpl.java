@@ -1,7 +1,9 @@
 package goodgames.order.service;
 
+import goodgames.common.validator.FieldValidator;
 import goodgames.order.domain.Order;
 import goodgames.order.domain.builder.OrderBuilder;
+import goodgames.order.exception.OrderCreationException;
 import goodgames.store.domain.CoffeeType;
 import goodgames.store.domain.PaymentType;
 
@@ -15,6 +17,9 @@ import com.google.common.collect.Lists;
 @Service("orderService")
 public class OrderServiceImpl implements OrderService {
 
+	private static final String NUMBER_OF_LATTE_ORDERS_CANNOT_BE_NULL = "Number of Latte Orders cannot be null";
+	private static final String NUMBER_OF_CAPUCCINO_ORDERS_CANNOT_BE_NULL = "Number of Capuccino Orders cannot be null";
+	private static final String NUMBER_OF_ESPRESSO_ORDERS_CANNOT_BE_NULL = "Number of Espresso Orders cannot be null";
 	private List<PaymentType> paymentTypes;
 
 	public OrderServiceImpl() {
@@ -23,17 +28,45 @@ public class OrderServiceImpl implements OrderService {
 
 	public List<Order> generateOrders(Integer numberOfEspressoOrders,
 			Integer numberOfLatteOrders, Integer numberOfCapuccinoOrders) {
+		validateNumbers(numberOfCapuccinoOrders, numberOfEspressoOrders,
+				numberOfLatteOrders);
+
 		List<Order> orders = Lists.newArrayList();
-		orders.addAll(generateOrders(numberOfEspressoOrders,
-				CoffeeType.ESPRESSO));
-		orders.addAll(generateOrders(numberOfLatteOrders, CoffeeType.LATTE));
-		orders.addAll(generateOrders(numberOfCapuccinoOrders,
-				CoffeeType.CAPUCCINO));
+		List<Order> espressoOrders = generateOrders(numberOfEspressoOrders,
+				CoffeeType.ESPRESSO);
+		addOrders(orders, espressoOrders);
+		List<Order> latteOrders = generateOrders(numberOfLatteOrders,
+				CoffeeType.LATTE);
+		addOrders(orders, latteOrders);
+		List<Order> capuccinoOrders = generateOrders(numberOfCapuccinoOrders,
+				CoffeeType.CAPUCCINO);
+		addOrders(orders, capuccinoOrders);
 		return orders;
+	}
+
+	private void validateNumbers(Integer numberOfCapuccinoOrders,
+			Integer numberOfEspressoOrders, Integer numberOfLatteOrders) {
+		FieldValidator.validateNotNull(numberOfCapuccinoOrders,
+				new OrderCreationException(
+						NUMBER_OF_CAPUCCINO_ORDERS_CANNOT_BE_NULL));
+		FieldValidator.validateNotNull(numberOfEspressoOrders,
+				new OrderCreationException(
+						NUMBER_OF_ESPRESSO_ORDERS_CANNOT_BE_NULL));
+		FieldValidator
+				.validateNotNull(numberOfLatteOrders,
+						new OrderCreationException(
+								NUMBER_OF_LATTE_ORDERS_CANNOT_BE_NULL));
+	}
+
+	private void addOrders(List<Order> orders, List<Order> specificCoffeeOrders) {
+		if (!specificCoffeeOrders.isEmpty()) {
+			orders.addAll(specificCoffeeOrders);
+		}
 	}
 
 	private List<Order> generateOrders(Integer expectedOrders,
 			CoffeeType coffeeType) {
+
 		List<Order> orders = Lists.newArrayList();
 		for (int i = 0; i < expectedOrders; i++) {
 			orders.add(generateOrder(coffeeType));
