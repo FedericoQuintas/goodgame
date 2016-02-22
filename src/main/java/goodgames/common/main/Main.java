@@ -140,7 +140,7 @@ public class Main {
 			SummaryInformation summaryInformation) {
 		String slowestAmmountOfTime = new StringBuilder()
 				.append(SLOWEST_PROGRAMMER)
-				.append(summaryInformation.getFastestAmmountOfTime())
+				.append(summaryInformation.getSlowestAmmountOfTime())
 				.toString();
 		System.out.println(slowestAmmountOfTime);
 	}
